@@ -51,6 +51,7 @@ function LevelEditorScreen({ onBack, onSave, onTest, initialLevel, draft, onDraf
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const screenWidth  = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
   const maxDim       = Math.max(rows, cols);
   const gridBudget   = screenWidth - 24;
   const cellSize     = Math.max(20, Math.floor(gridBudget / maxDim));
@@ -271,29 +272,29 @@ function LevelEditorScreen({ onBack, onSave, onTest, initialLevel, draft, onDraf
     ? getSmartTileQueueLabel(selectedTile, grid)
     : null;
   const placingLabel = smartQueueLabel
-    ? `${activePalette.label}  ·  NEXT: ${smartQueueLabel}`
+    ? `${activePalette.label} · NEXT: ${smartQueueLabel}`
     : activePalette.label;
 
   const tilesPerRow     = 7;
   const palettePad      = 12 * 2;
-  const tileGap         = 3;
+  const tileGap         = 2;
   const paletteTileSize = Math.floor((screenWidth - palettePad - tileGap * (tilesPerRow - 1)) / tilesPerRow);
-  const paletteFontSize  = Math.max(13, paletteTileSize * 0.40);
-  const paletteLabelSize = Math.max(8,  paletteTileSize * 0.19);
+  const paletteFontSize  = Math.max(11, paletteTileSize * 0.36);
+  const paletteLabelSize = Math.max(6,  paletteTileSize * 0.17);
   const rows7 = [];
   for (let i = 0; i < PALETTE_TILES.length; i += tilesPerRow)
     rows7.push(PALETTE_TILES.slice(i, i + tilesPerRow));
 
   return (
-    <View style={{ flex: 1, backgroundColor: C.void }}>
-      <Screen style={[styles.screen, { justifyContent: 'flex-start', paddingTop: insets.top + 14, paddingBottom: insets.bottom + 8, paddingHorizontal: 12 }]}>
+    <View style={{ flex: 1, backgroundColor: C.void, paddingTop: insets.top, paddingBottom: insets.bottom }}>
+      <Screen style={[styles.screen, { justifyContent: 'flex-start', paddingTop: 8, paddingBottom: 4, paddingHorizontal: 12 }]}>
 
-        <Text style={[styles.screenTitle, { marginBottom: 10, textAlign: 'center', width: '100%' }]}>
+        <Text style={{ fontSize: 16, fontWeight: '700', color: C.textPrimary, letterSpacing: 6, fontFamily: FONT, marginBottom: 6, textAlign: 'center', width: '100%' }}>
           {initialLevel ? 'EDIT LEVEL' : 'CREATE NEW LEVEL'}
         </Text>
 
         <View style={styles.editorHeaderRow}>
-          <View style={styles.editorSettings}>
+          <View style={[styles.editorSettings, { paddingVertical: 2 }]}>
             {[
               { label: 'ROWS',  val: rows,         onDec: () => handleResizeRows(-1), onInc: () => handleResizeRows(1) },
               { label: 'COLS',  val: cols,         onDec: () => handleResizeCols(-1), onInc: () => handleResizeCols(1) },
@@ -301,7 +302,7 @@ function LevelEditorScreen({ onBack, onSave, onTest, initialLevel, draft, onDraf
               { label: 'ECHO',  val: echoLast,     onDec: () => setEchoLast(e => Math.max(1, e-1)),     onInc: () => setEchoLast(e => Math.min(movesPerTurn, e+1)) },
             ].map((s, i, arr) => (
               <React.Fragment key={s.label}>
-                <View style={styles.editorSetting}>
+                <View style={[styles.editorSetting, { paddingVertical: 4 }]}>
                   <Text style={styles.editorSettingLabel}>{s.label}</Text>
                   <View style={styles.editorCounter}>
                     <TouchableOpacity style={styles.editorCounterBtn} onPress={s.onDec}><Text style={styles.editorCounterBtnText}>−</Text></TouchableOpacity>
@@ -315,7 +316,7 @@ function LevelEditorScreen({ onBack, onSave, onTest, initialLevel, draft, onDraf
           </View>
         </View>
 
-        <View style={[styles.editorPlacingBar, { borderColor: activePalette.tc+'99', backgroundColor: activePalette.bg }]}>
+        <View style={[styles.editorPlacingBar, { borderColor: activePalette.tc+'99', backgroundColor: activePalette.bg, paddingVertical: 4, marginBottom: 4 }]}>
           <Text style={styles.editorPlacingBarLabel}>PLACING</Text>
           <Text style={[styles.editorPlacingBarTile, { color: activePalette.tc }]}>
             {activePalette.icon}  {placingLabel}
@@ -366,7 +367,7 @@ function LevelEditorScreen({ onBack, onSave, onTest, initialLevel, draft, onDraf
           const canUndo    = tileHistoryRef.current.length > 0;
           const hasContent = grid.some(row => row.some(cell => cell !== '.'));
           return (
-            <View style={styles.editorUtilRow}>
+            <View style={[styles.editorUtilRow, { marginTop: 4, marginBottom: 2 }]}>
               <TouchableOpacity
                 style={[styles.editorUtilBtn, !canUndo && styles.editorUtilBtnDisabled]}
                 onPress={undoTile} disabled={!canUndo} activeOpacity={0.7}
@@ -385,7 +386,7 @@ function LevelEditorScreen({ onBack, onSave, onTest, initialLevel, draft, onDraf
           );
         })()}
 
-        <View style={[styles.paletteWrapper, { marginTop: 8 }]}>
+        <View style={[styles.paletteWrapper, { marginTop: 4, paddingTop: 4 }]}>
           {rows7.map((rowTiles, rowIdx) => (
             <View key={rowIdx} style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: tileGap }}>
               {rowTiles.map((p, tileIdx) => {
@@ -427,7 +428,7 @@ function LevelEditorScreen({ onBack, onSave, onTest, initialLevel, draft, onDraf
           ))}
         </View>
 
-        <View style={styles.editorFooterRow}>
+        <View style={[styles.editorFooterRow, { marginTop: 4 }]}>
           <TouchableOpacity style={[styles.footerBtn, styles.editorFooterBtnFlex]} onPress={onBack} activeOpacity={0.7}>
             <Text style={styles.footerBtnText}>‹  BACK</Text>
           </TouchableOpacity>

@@ -78,7 +78,7 @@ export function getSmartTileQueueLabel(paletteKey, grid) {
   const { tCounts } = countTilesInGrid(grid);
   if (paletteKey === 'TELE') {
     const cnt = tCounts[next] || 0;
-    return cnt === 0 ? `${next}  FIRST` : `${next}  SECOND`;
+    return cnt === 0 ? `${next}  1ST` : `${next}  2ND`;
   }
   if (paletteKey === 'PAD')  return `${next}`;
   if (paletteKey === 'DOOR') return `${next}`;

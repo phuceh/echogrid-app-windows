@@ -10,7 +10,7 @@ function LevelBuilderMenuScreen({ onBack, onCreate, onSaved, savedCount, atLimit
       <Text style={styles.screenSubtitle}>CREATE · SAVE · PLAY</Text>
       <View style={styles.builderTaglineRow}>
         <Text style={styles.builderTagline}>Design custom grids with every mechanic.</Text>
-        <Text style={styles.builderTagline}>Share sequences. Challenge your echo.</Text>
+        <Text style={styles.builderTagline}>Challenge your echo.</Text>
       </View>
       <TouchableOpacity
         style={[styles.menuButton, atLimit && { opacity: 0.45 }]}

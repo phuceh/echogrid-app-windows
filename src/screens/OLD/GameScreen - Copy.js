@@ -996,8 +996,11 @@ function GameScreen({ level, isTestMode, onBack, onMenu, onNext, onComplete, onS
 
         <View style={{ alignItems: 'center', alignSelf: 'stretch' }}>
           <View style={[styles.dpad, maxDim >= 11 && { marginTop: 0 }]}>
+            <TouchableOpacity style={[styles.dpadBtn, disabled && styles.dpadDisabled]} onPress={() => handleMove('UP')} disabled={disabled}>
+              <Text style={styles.dpadText}>▲</Text>
+            </TouchableOpacity>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <TouchableOpacity style={[styles.dpadUtilBtn, styles.undoBtn, undoDisabled && styles.utilBtnDisabled, { marginRight: 8 }]}
+              <TouchableOpacity style={[styles.dpadUtilBtn, styles.undoBtn, undoDisabled && styles.utilBtnDisabled, { marginRight: 12 }]}
                 onPress={undoMove} disabled={undoDisabled} activeOpacity={0.7}>
                 <Text style={[styles.utilBtnIcon, undoDisabled && styles.utilIconDisabled]}>↩︎</Text>
                 <Text style={[styles.utilBtnLabel, undoDisabled && styles.utilLabelDisabled]}>UNDO</Text>
@@ -1005,17 +1008,13 @@ function GameScreen({ level, isTestMode, onBack, onMenu, onNext, onComplete, onS
               <TouchableOpacity style={[styles.dpadBtn, disabled && styles.dpadDisabled]} onPress={() => handleMove('LEFT')} disabled={disabled}>
                 <Text style={styles.dpadText}>◀</Text>
               </TouchableOpacity>
-              <View style={{ width: 12 }} />
-              <TouchableOpacity style={[styles.dpadBtn, disabled && styles.dpadDisabled]} onPress={() => handleMove('UP')} disabled={disabled}>
-                <Text style={styles.dpadText}>▲</Text>
-              </TouchableOpacity>
-              <View style={{ width: 12 }} />
+              <View style={styles.dpadGap} />
               <TouchableOpacity style={[styles.dpadBtn, disabled && styles.dpadDisabled]} onPress={() => handleMove('RIGHT')} disabled={disabled}>
                 <Text style={styles.dpadText}>▶</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.dpadUtilBtn, styles.hintBtn, (won || gameOver || isTutorial) && styles.utilBtnDisabled,
-                        { borderColor: hintBtnBorderColor, backgroundColor: hintBtnBgColor, marginLeft: 8 }]}
+                        { borderColor: hintBtnBorderColor, backgroundColor: hintBtnBgColor, marginLeft: 12 }]}
                 onPress={useHint} disabled={won || gameOver || isTutorial} activeOpacity={0.7}>
                 <Text style={[styles.utilBtnIcon, { color: hintIconColor }, (won || gameOver || isTutorial) && styles.utilIconDisabled]}>{hintIcon}</Text>
                 <Text style={[styles.utilBtnLabel, { color: hintIconColor }, (won || gameOver || isTutorial) && styles.utilLabelDisabled]}>{hintLabel}</Text>
