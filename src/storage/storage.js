@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NativeModules } from 'react-native';
 import { IAP_SKU } from '../constants/game';
+
+const { AmazonIAP } = NativeModules;
 
 const PROGRESS_KEY = 'echogrid_progress';
 const META_KEY     = 'echogrid_meta';
@@ -17,6 +20,11 @@ const _LEGACY_CUSTOM    = 'echogrid_custom';
 
 export async function loadAllData() {
   try {
+    // Initialise Amazon IAP on load
+    if (AmazonIAP) {
+      try { await AmazonIAP.initiate(); } catch {}
+    }
+
     const [progressRaw, metaRaw] = await AsyncStorage.multiGet([PROGRESS_KEY, META_KEY]);
     const progress = progressRaw[1] ? JSON.parse(progressRaw[1]) : null;
     const meta     = metaRaw[1]     ? JSON.parse(metaRaw[1])     : null;
@@ -75,4 +83,32 @@ export async function saveMeta({ purchased, customLevels }) {
   } catch {}
 }
 
-export async function purchaseFullGame() { return true; } // MOCK — replace with real IAP using IAP_SKU
+// ─── IAP ──────────────────────────────────────────────────────────────────────
+
+export async function purchaseFullGame() {
+  try {
+    if (!AmazonIAP) {
+      console.warn('AmazonIAP native module not available');
+      return false;
+    }
+    const result = await AmazonIAP.purchaseItem(IAP_SKU);
+    return result === true;
+  } catch (e) {
+    console.warn('purchaseFullGame error:', e);
+    return false;
+  }
+}
+
+export async function restoreFullGame() {
+  try {
+    if (!AmazonIAP) {
+      console.warn('AmazonIAP native module not available');
+      return false;
+    }
+    const result = await AmazonIAP.restorePurchases();
+    return result === true;
+  } catch (e) {
+    console.warn('restoreFullGame error:', e);
+    return false;
+  }
+}

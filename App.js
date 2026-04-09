@@ -6,7 +6,7 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 import { C, FONT } from './src/constants/theme';
 import { FREE_LEVEL_LIMIT, HINT_MAX, HINT_REWARD_EVERY, TUTORIAL_GATES, TUTORIAL_LEVELS } from './src/constants/game';
 import { LEVELS } from './levels/levels';
-import { loadAllData, saveProgress, saveMeta, purchaseFullGame } from './src/storage/storage';
+import { loadAllData, saveProgress, saveMeta, purchaseFullGame, restoreFullGame } from './src/storage/storage';
 import styles from './src/styles/styles';
 
 import StartScreen           from './src/screens/StartScreen';
@@ -210,7 +210,7 @@ function AppInner() {
   const handleRestore = async () => {
     setIsPurchasing(true);
     try {
-      const restored = await purchaseFullGame();
+      const restored = await restoreFullGame();
       if (restored) {
         await saveMeta({ purchased: true, customLevels: customLevelsRef.current });
         setIsPurchased(true);
