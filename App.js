@@ -162,42 +162,17 @@ function AppInner() {
     };
   }, []);
 
-  const markCompleted = (id) => new Promise(async (resolve) => {
-    setCompleted(prev => {
-      if (prev.includes(id)) { resolve(prev); return prev; }
-      const next = [...prev, id];
-      saveProgress({ completed: next, stars: levelStarsRef.current, bestTurns: bestTurnsRef.current, tutorialCompleted: tutorialCompletedRef.current, hints: hintsRef.current });
-      resolve(next);
-      return next;
-    });
-  });
-
   const markTutorialCompleted = async (id) => {
-    setTutorialCompleted(prev => {
-      if (prev.includes(id)) return prev;
-      const next = [...prev, id];
-      saveProgress({ completed: completedRef.current, stars: levelStarsRef.current, bestTurns: bestTurnsRef.current, tutorialCompleted: next, hints: hintsRef.current });
-      return next;
-    });
-  };
-
-  const updateStars = async (id, stars) => {
-    if (stars == null) return;
-    setLevelStars(prev => {
-      if (prev[id] != null && prev[id] >= stars) return prev;
-      const next = { ...prev, [id]: stars };
-      saveProgress({ completed: completedRef.current, stars: next, bestTurns: bestTurnsRef.current, tutorialCompleted: tutorialCompletedRef.current, hints: hintsRef.current });
-      return next;
-    });
-  };
-
-  const updateBestTurns = async (id, turns) => {
-    if (turns == null) return;
-    setBestTurns(prev => {
-      if (prev[id] != null && prev[id] <= turns) return prev;
-      const next = { ...prev, [id]: turns };
-      saveProgress({ completed: completedRef.current, stars: levelStarsRef.current, bestTurns: next, tutorialCompleted: tutorialCompletedRef.current, hints: hintsRef.current });
-      return next;
+    if (tutorialCompletedRef.current.includes(id)) return;
+    const next = [...tutorialCompletedRef.current, id];
+    tutorialCompletedRef.current = next;
+    setTutorialCompleted(next);
+    await saveProgress({
+      completed: completedRef.current,
+      stars: levelStarsRef.current,
+      bestTurns: bestTurnsRef.current,
+      tutorialCompleted: next,
+      hints: hintsRef.current,
     });
   };
 
@@ -498,9 +473,31 @@ function AppInner() {
             let awarded = false;
             if (level.type === 'campaign') {
               enqueueCompletion(async () => {
-                await markCompleted(level.id);
-                await updateStars(level.id, stars);
-                await updateBestTurns(level.id, turns);
+                const newCompleted = completedRef.current.includes(level.id)
+                  ? completedRef.current
+                  : [...completedRef.current, level.id];
+                completedRef.current = newCompleted;
+                setCompleted(newCompleted);
+
+                const newStars = stars != null && (levelStarsRef.current[level.id] == null || stars > levelStarsRef.current[level.id])
+                  ? { ...levelStarsRef.current, [level.id]: stars }
+                  : levelStarsRef.current;
+                levelStarsRef.current = newStars;
+                setLevelStars(newStars);
+
+                const newBestTurns = turns != null && (bestTurnsRef.current[level.id] == null || turns < bestTurnsRef.current[level.id])
+                  ? { ...bestTurnsRef.current, [level.id]: turns }
+                  : bestTurnsRef.current;
+                bestTurnsRef.current = newBestTurns;
+                setBestTurns(newBestTurns);
+
+                await saveProgress({
+                  completed: newCompleted,
+                  stars: newStars,
+                  bestTurns: newBestTurns,
+                  tutorialCompleted: tutorialCompletedRef.current,
+                  hints: hintsRef.current,
+                });
               });
               if (!isPurchased) {
                 const willBeTotal = completed.includes(level.id) ? completed.length : completed.length + 1;
