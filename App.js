@@ -151,7 +151,7 @@ function AppInner() {
       setLevelStars(stars);
       setBestTurns(bestTurns);
       setCustomLevels(customLevels);
-      setIsPurchased(purchased);
+      setIsPurchased(true);
       setTutorialCompleted(tutorialCompleted);
       setHintsStored(hints);
       setIsLoading(false);
@@ -285,7 +285,7 @@ function AppInner() {
     try {
       await saveMeta({ purchased: false, customLevels: customLevelsRef.current });
       await saveProgress({ completed: completedRef.current, stars: levelStarsRef.current, bestTurns: bestTurnsRef.current, tutorialCompleted: [], hints: hintsRef.current });
-      setIsPurchased(false);
+      setIsPurchased(true);
       setTutorialCompleted([]);
       setJustUnlocked(false);
       Alert.alert('DEV', 'IAP + tutorial progress reset.');
