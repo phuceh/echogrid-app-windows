@@ -44,7 +44,10 @@
       "dist/**/*",
       "main.js",
       "node_modules/**/*"
-    ]
+    ],
+    "appx": {
+      "applicationId": "EchoGrid"
+    }
   },
   "author": "Three Infinity",
   "description": "A grid-based echo puzzle game"
