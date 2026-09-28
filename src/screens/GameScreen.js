@@ -715,6 +715,17 @@ function GameScreen({ level, isTestMode, onBack, onMenu, onNext, onComplete, onS
 
   useEffect(() => { handleMoveRef.current = handleMove; }, [handleMove]);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft')  handleMoveRef.current('LEFT');
+      if (e.key === 'ArrowRight') handleMoveRef.current('RIGHT');
+      if (e.key === 'ArrowUp')    handleMoveRef.current('UP');
+      if (e.key === 'ArrowDown')  handleMoveRef.current('DOWN');
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const resetLevel = () => {
     trailTimersRef.current.forEach(clearTimeout);
     echoTimersRef.current.forEach(clearTimeout);
