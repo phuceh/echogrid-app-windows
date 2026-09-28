@@ -80,7 +80,7 @@ function AppInner() {
   const [editingCustomLevel, setEditingCustomLevel] = useState(null);
   const [testingLevel,       setTestingLevel]       = useState(null);
   const [editorDraft,        setEditorDraft]        = useState(null);
-  const [isPurchased,        setIsPurchased]       = useState(false);
+  const [isPurchased,        setIsPurchased]       = useState(true);
   const [isPurchasing,       setIsPurchasing]      = useState(false);
   const [unlockReturnTo,     setUnlockReturnTo]    = useState('levels');
   const [hintsStored,        setHintsStored]       = useState(1);
