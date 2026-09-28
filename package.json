@@ -45,5 +45,7 @@
       "main.js",
       "node_modules/**/*"
     ]
-  }
+  },
+  "author": "Three Infinity",
+  "description": "A grid-based echo puzzle game"
 }
