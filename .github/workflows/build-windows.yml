@@ -1,0 +1,35 @@
+name: Build Windows App
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install web dependencies
+        run: npx expo install react-dom react-native-web @expo/metro-runtime
+
+      - name: Build web export
+        run: npx expo export --platform web
+
+      - name: Build Windows app
+        run: npx electron-builder --win appx
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: echo-grid-windows
+          path: release/*.appx
