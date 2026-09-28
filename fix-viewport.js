@@ -1,0 +1,13 @@
+const fs = require('fs');
+const path = require('path');
+
+const indexPath = path.join(__dirname, 'dist', 'index.html');
+let html = fs.readFileSync(indexPath, 'utf8');
+
+html = html.replace(
+  /<meta name="viewport"[^>]*>/,
+  '<meta name="viewport" content="width=430">'
+);
+
+fs.writeFileSync(indexPath, html);
+console.log('Viewport fixed.');

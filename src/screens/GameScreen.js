@@ -33,7 +33,7 @@ function GameScreen({ level, isTestMode, onBack, onMenu, onNext, onComplete, onS
 
   const insets = useSafeAreaInsets();
 
-  const screenWidth  = Dimensions.get('window').width;
+  const screenWidth  = Math.min(Dimensions.get('window').width, 500);
   const maxDim       = Math.max(grid.length, grid[0].length);
   const screenPadH   = maxDim >= 11 ? 0 : maxDim >= 10 ? 4 : maxDim >= 8 ? 10 : 16;
   const gridBudget   = screenWidth - screenPadH * 2;
