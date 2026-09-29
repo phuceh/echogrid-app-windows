@@ -64,7 +64,7 @@ function SavedLevelsScreen({ onBack, onPlay, onEdit, onDelete, onDeleteAll, cust
         <View style={[styles.corner, styles.cornerTR]} />
       </Screen>
       <Overlay visible={confirmDelete !== null}>
-        <View style={[styles.alertBanner, { borderColor: C.warn, width: Dimensions.get('window').width - 48 }]}>
+        <View style={[styles.alertBanner, { borderColor: C.warn, width: Math.min(Dimensions.get('window').width, 500) - 48 }]}>
           <View style={styles.alertContent}>
             <Text style={styles.alertTitle}>DELETE LEVEL?</Text>
             <Text style={styles.alertReason}>THIS CANNOT BE UNDONE</Text>
@@ -80,7 +80,7 @@ function SavedLevelsScreen({ onBack, onPlay, onEdit, onDelete, onDeleteAll, cust
         </View>
       </Overlay>
       <Overlay visible={confirmDeleteAll}>
-        <View style={[styles.alertBanner, { borderColor: C.warn, width: Dimensions.get('window').width - 48 }]}>
+        <View style={[styles.alertBanner, { borderColor: C.warn, width: Math.min(Dimensions.get('window').width, 500) - 48 }]}>
           <View style={styles.alertContent}>
             <Text style={styles.alertTitle}>DELETE ALL LEVELS?</Text>
             <Text style={styles.alertReason}>

@@ -521,7 +521,8 @@ function AppInner() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: C.void }}>
+    <View style={{ flex: 1, backgroundColor: C.void, alignItems: 'center' }}>
+      <View style={{ width: '100%', maxWidth: 500, flex: 1 }}>
       {isLoading ? (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Animated.Text style={{ fontSize: 36, fontWeight: '900', color: C.teal, letterSpacing: 16, fontFamily: FONT, opacity: loadingPulse }}>
@@ -541,6 +542,7 @@ function AppInner() {
           {justUnlocked && <UnlockToast fadeAnim={unlockFadeAnim} />}
         </>
       )}
+    </View>
     </View>
   );
 }

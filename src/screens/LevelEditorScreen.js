@@ -50,7 +50,7 @@ function LevelEditorScreen({ onBack, onSave, onTest, initialLevel, draft, onDraf
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const screenWidth  = Dimensions.get('window').width;
+  const screenWidth  = Math.min(Dimensions.get('window').width, 500);
   const screenHeight = Dimensions.get('window').height;
   const maxDim       = Math.max(rows, cols);
   const gridBudget   = screenWidth - 24;
