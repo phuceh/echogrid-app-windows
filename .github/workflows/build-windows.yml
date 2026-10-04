@@ -25,8 +25,11 @@ jobs:
       - name: Build web export
         run: npx expo export --platform web
 
+      - name: Fix paths and viewport
+        run: node fix-viewport.js
+
       - name: Build Windows app
-        run: npx electron-builder --win appx
+        run: npx electron-builder --win appx --publish never
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
