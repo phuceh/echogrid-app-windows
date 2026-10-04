@@ -26,7 +26,7 @@
   },
   "private": true,
   "name": "echo-grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "devDependencies": {
     "electron": "^44.4.5",
     "electron-builder": "^26.15.3",
