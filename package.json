@@ -31,7 +31,7 @@
     "electron": "^44.4.5",
     "electron-builder": "^26.15.3",
     "electron-serve": "^3.0.1",
-    "express": "^5.2.1"
+    "express": "^4.22.3"
   },
   "build": {
     "appId": "com.threeinfinity.echogrid",

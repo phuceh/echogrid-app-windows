@@ -1,16 +1,14 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, protocol, net } = require('electron');
 const path = require('path');
-const express = require('express');
+const url = require('url');
 
-let server;
+app.whenReady().then(() => {
+  protocol.handle('app', (request) => {
+    const filePath = request.url.slice('app://'.length);
+    const fullPath = path.join(__dirname, 'dist', filePath || 'index.html');
+    return net.fetch(url.pathToFileURL(fullPath).toString());
+  });
 
-function startServer() {
-  const expressApp = express();
-  expressApp.use(express.static(path.join(__dirname, 'dist')));
-  server = expressApp.listen(3000);
-}
-
-function createWindow() {
   const win = new BrowserWindow({
     width: 430,
     height: 932,
@@ -21,15 +19,9 @@ function createWindow() {
     }
   });
 
-  win.loadURL('http://localhost:3000');
-}
-
-app.whenReady().then(() => {
-  startServer();
-  createWindow();
+  win.loadURL('app://index.html');
 });
 
 app.on('window-all-closed', () => {
-  if (server) server.close();
   if (process.platform !== 'darwin') app.quit();
 });
