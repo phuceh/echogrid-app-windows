@@ -1,14 +1,19 @@
 const { app, BrowserWindow, protocol, net } = require('electron');
-const path = require('path');
-const url = require('url');
+const path = require('node:path');
+const { pathToFileURL } = require('node:url');
 
-app.whenReady().then(() => {
-  protocol.handle('app', (request) => {
-    const filePath = request.url.slice('app://'.length);
-    const fullPath = path.join(__dirname, 'dist', filePath || 'index.html');
-    return net.fetch(url.pathToFileURL(fullPath).toString());
-  });
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: 'app',
+    privileges: {
+      standard: true,
+      secure: true,
+      supportFetchAPI: true
+    }
+  }
+]);
 
+function createWindow() {
   const win = new BrowserWindow({
     width: 430,
     height: 932,
@@ -19,7 +24,17 @@ app.whenReady().then(() => {
     }
   });
 
-  win.loadURL('app://index.html');
+  win.loadURL('app://./index.html');
+}
+
+app.whenReady().then(() => {
+  protocol.handle('app', (request) => {
+    const filePath = request.url.slice('app://./'.length);
+    const fullPath = path.join(__dirname, 'dist', filePath || 'index.html');
+    return net.fetch(pathToFileURL(fullPath).toString());
+  });
+
+  createWindow();
 });
 
 app.on('window-all-closed', () => {

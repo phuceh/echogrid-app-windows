@@ -52,7 +52,11 @@
       "applicationId": "EchoGrid",
       "identityName": "ThreeInfinity.EchoGrid",
       "publisher": "CN=2C0773BF-7A71-4EB5-9B26-1A0A8550E6D7",
-      "publisherDisplayName": "Three Infinity"
+      "publisherDisplayName": "Three Infinity",
+      "square44x44Logo": "assets/appx/Square44x44Logo.png",
+      "square150x150Logo": "assets/appx/Square150x150Logo.png",
+      "wide310x150Logo": "assets/appx/Wide310x150Logo.png",
+      "square310x310Logo": "assets/appx/Square310x310Logo.png"
     }
   },
   "author": "Three Infinity",
