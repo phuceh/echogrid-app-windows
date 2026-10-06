@@ -34,13 +34,19 @@ jobs:
           $pwd = ConvertTo-SecureString -String "echogrid123" -Force -AsPlainText
           Export-PfxCertificate -cert $cert -FilePath "echogrid.pfx" -Password $pwd
           Export-Certificate -cert $cert -FilePath "echogrid.cer"
+          echo "CERT_THUMBPRINT=$($cert.Thumbprint)" >> $env:GITHUB_ENV
         shell: powershell
 
       - name: Build Windows app
         run: npx electron-builder --win appx --publish never
         env:
-          CSC_LINK: echogrid.pfx
-          CSC_KEY_PASSWORD: echogrid123
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+
+      - name: Sign appx with Windows signtool
+        run: |
+          $signtool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\signtool.exe"
+          & $signtool sign /fd SHA256 /f echogrid.pfx /p echogrid123 /tr http://timestamp.digicert.com /td SHA256 "release\Echo Grid 1.0.1.appx"
+        shell: powershell
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
