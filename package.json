@@ -30,14 +30,15 @@
   "devDependencies": {
     "electron": "^44.4.5",
     "electron-builder": "^26.15.3",
-    "electron-serve": "^3.0.1"
+    "electron-serve": "^3.0.1",
+    "express": "^5.2.1"
   },
   "build": {
     "appId": "com.threeinfinity.echogrid",
     "productName": "Echo Grid",
     "win": {
       "target": "appx",
-      "icon": "icon.ico"
+      "icon": "assets/icon.ico"
     },
     "directories": {
       "output": "release"

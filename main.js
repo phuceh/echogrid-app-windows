@@ -1,6 +1,14 @@
-const { app, BrowserWindow, protocol } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const path = require('path');
-const fs = require('fs');
+const express = require('express');
+
+let server;
+
+function startServer() {
+  const expressApp = express();
+  expressApp.use(express.static(path.join(__dirname, 'dist')));
+  server = expressApp.listen(3000);
+}
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -13,23 +21,15 @@ function createWindow() {
     }
   });
 
-  win.loadFile(path.join(__dirname, 'dist/index.html'));
+  win.loadURL('http://localhost:3000');
 }
 
 app.whenReady().then(() => {
-  protocol.interceptFileProtocol('file', (request, callback) => {
-    let url = request.url.substr(7);
-    url = decodeURIComponent(url);
-    if (!fs.existsSync(url)) {
-      const distPath = path.join(__dirname, 'dist', url.split('/dist/').pop() || '');
-      callback({ path: distPath });
-    } else {
-      callback({ path: url });
-    }
-  });
+  startServer();
   createWindow();
 });
 
 app.on('window-all-closed', () => {
+  if (server) server.close();
   if (process.platform !== 'darwin') app.quit();
 });
