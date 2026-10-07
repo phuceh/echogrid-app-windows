@@ -22,8 +22,14 @@ jobs:
       - name: Install web dependencies
         run: npx expo install react-dom react-native-web @expo/metro-runtime
 
+      - name: Set main to index.js for web export
+        run: npm pkg set main="index.js"
+
       - name: Build web export
         run: npx expo export --platform web
+
+      - name: Set main back to main.js
+        run: npm pkg set main="main.js"
 
       - name: Fix paths and viewport
         run: node fix-viewport.js
