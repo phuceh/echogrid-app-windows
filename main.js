@@ -24,13 +24,14 @@ function createWindow() {
     }
   });
 
-  win.loadURL('app://./index.html');
+  win.loadURL('app://echoapp/index.html');
 }
 
 app.whenReady().then(() => {
   protocol.handle('app', (request) => {
-    const filePath = request.url.slice('app://./'.length);
-    const fullPath = path.join(__dirname, 'dist', filePath || 'index.html');
+    const url = new URL(request.url);
+    const filePath = url.pathname;
+    const fullPath = path.join(__dirname, 'dist', filePath);
     return net.fetch(pathToFileURL(fullPath).toString());
   });
 

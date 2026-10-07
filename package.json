@@ -1,6 +1,6 @@
 {
   "license": "0BSD",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
@@ -53,7 +53,8 @@
       "identityName": "ThreeInfinity.EchoGrid",
       "publisher": "CN=2C0773BF-7A71-4EB5-9B26-1A0A8550E6D7",
       "publisherDisplayName": "Three Infinity"
-    }
+    },
+    "icon": "assets/icon.ico"
   },
   "author": "Three Infinity",
   "description": "A grid-based echo puzzle game"
