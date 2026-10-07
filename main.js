@@ -31,14 +31,14 @@ function startServer() {
 }
 
 function createWindow() {
-  const { height } = screen.getPrimaryDisplay().workAreaSize;
-  const winHeight = Math.min(932, Math.floor(height * 0.92));
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  const winHeight = Math.floor(height * 0.92);
   const winWidth = Math.floor(winHeight * (430 / 932));
 
   const win = new BrowserWindow({
     width: winWidth,
     height: winHeight,
-    resizable: false,
+    resizable: true,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true
