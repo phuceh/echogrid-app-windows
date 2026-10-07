@@ -1,17 +1,34 @@
-const { app, BrowserWindow, protocol, net } = require('electron');
-const path = require('node:path');
-const { pathToFileURL } = require('node:url');
+const { app, BrowserWindow } = require('electron');
+const path = require('path');
+const http = require('http');
+const fs = require('fs');
 
-protocol.registerSchemesAsPrivileged([
-  {
-    scheme: 'app',
-    privileges: {
-      standard: true,
-      secure: true,
-      supportFetchAPI: true
+const MIME_TYPES = {
+  '.html': 'text/html',
+  '.js': 'application/javascript',
+  '.css': 'text/css',
+  '.png': 'image/png',
+  '.ico': 'image/x-icon',
+  '.json': 'application/json',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+};
+
+let server;
+
+function startServer() {
+  server = http.createServer((req, res) => {
+    let filePath = path.join(__dirname, 'dist', req.url === '/' ? 'index.html' : req.url);
+    if (!fs.existsSync(filePath)) {
+      filePath = path.join(__dirname, 'dist', 'index.html');
     }
-  }
-]);
+    const ext = path.extname(filePath);
+    const contentType = MIME_TYPES[ext] || 'text/plain';
+    res.writeHead(200, { 'Content-Type': contentType });
+    fs.createReadStream(filePath).pipe(res);
+  });
+  server.listen(3847);
+}
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -23,21 +40,15 @@ function createWindow() {
       contextIsolation: true
     }
   });
-
-  win.loadURL('app://echoapp/index.html');
+  win.loadURL('http://localhost:3847');
 }
 
 app.whenReady().then(() => {
-  protocol.handle('app', (request) => {
-    const url = new URL(request.url);
-    const filePath = url.pathname;
-    const fullPath = path.join(__dirname, 'dist', filePath);
-    return net.fetch(pathToFileURL(fullPath).toString());
-  });
-
+  startServer();
   createWindow();
 });
 
 app.on('window-all-closed', () => {
+  if (server) server.close();
   if (process.platform !== 'darwin') app.quit();
 });
