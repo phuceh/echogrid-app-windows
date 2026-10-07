@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, screen } = require('electron');
 const path = require('path');
 const http = require('http');
 const fs = require('fs');
@@ -31,16 +31,20 @@ function startServer() {
 }
 
 function createWindow() {
+  const { height } = screen.getPrimaryDisplay().workAreaSize;
+  const winHeight = Math.min(932, Math.floor(height * 0.92));
+  const winWidth = Math.floor(winHeight * (430 / 932));
+
   const win = new BrowserWindow({
-    width: 800,
-    height: 932,
+    width: winWidth,
+    height: winHeight,
+    resizable: false,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true
     }
   });
   win.loadURL('http://localhost:3847');
-  win.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
