@@ -32,15 +32,15 @@ function startServer() {
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 430,
+    width: 800,
     height: 932,
-    resizable: false,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true
     }
   });
   win.loadURL('http://localhost:3847');
+  win.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
