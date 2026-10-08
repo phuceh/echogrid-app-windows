@@ -22,12 +22,16 @@ html = html.replace(
       height: 100%;
       overflow: hidden;
       background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
     }
     #root {
       width: 430px;
       height: 932px;
-      transform-origin: top left;
+      transform-origin: top center;
       transform: scale(var(--scale, 1));
+      flex-shrink: 0;
     }
   </style>
   <script>

@@ -38,7 +38,9 @@ function createWindow() {
   const win = new BrowserWindow({
     width: winWidth,
     height: winHeight,
+    minWidth: 300,
     resizable: true,
+    center: true,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true
