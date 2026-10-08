@@ -51,7 +51,7 @@ jobs:
         run: |
           $signtool = (Get-ChildItem -Path "C:\Program Files (x86)\Windows Kits\10\bin" -Recurse -Filter "signtool.exe" | Where-Object { $_.FullName -like "*x64*" } | Select-Object -First 1).FullName
           Write-Host "Found signtool at: $signtool"
-          & $signtool sign /fd SHA256 /f echogrid.pfx /p echogrid123 /tr http://timestamp.digicert.com /td SHA256 "release\Echo Grid 1.0.1.appx"
+          & $signtool sign /fd SHA256 /f echogrid.pfx /p echogrid123 /tr http://timestamp.digicert.com /td SHA256 "release\Echo Grid*.appx"
         shell: powershell
 
       - name: Upload artifact
